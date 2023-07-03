@@ -1,0 +1,76 @@
+
+{
+    "name": "ui-module-plugin",
+    "version": "0.0.2",
+    "engines": {
+        "vscode": "^1.56.2"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onStartupFinished",
+        "onLanguage:lua",
+        "onCommand:create.ui_module"
+    ],
+    "main": "./ext.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "create.ui_module",
+                "title": "创建ui和module"
+            },
+            {
+                "command": "create.click_event",
+                "title": "生成点击事件"
+            },
+            {
+                "command": "create.event",
+                "title": "生成事件"
+            },
+            {
+                "command": "extension.copyFile",
+                "title": "复制当前lua脚本到WinClient"
+            }
+        ],
+        "menus": {
+            "explorer/context": [
+                {
+                    "command": "create.ui_module",
+                    "group": "navigation"
+                }
+            ],
+            "editor/context": [
+                {
+                    "when": "editorFocus",
+                    "command": "create.click_event",
+                    "group": "0_game_for_peace_ui_plugin"
+                },
+                {
+                    "when": "editorFocus",
+                    "command": "create.event",
+                    "group": "0_game_for_peace_ui_plugin"
+                },
+                {
+                    "when": "editorFocus",
+                    "command": "extension.copyFile",
+                    "group": "0_game_for_peace_ui_plugin"
+                }
+            ]
+        },
+        "keybindings": [
+            {
+                "command": "create.click_event",
+                "key": "alt+x"
+            },
+            {
+                "command": "create.event",
+                "key": "alt+q"
+            },
+            {
+                "command": "extension.copyFile",
+                "key": "alt+z"
+            }
+        ]
+    }
+  }
