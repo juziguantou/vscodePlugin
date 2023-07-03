@@ -8,6 +8,10 @@
     "categories": [
         "Other"
     ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/juziguantou/vscodePlugin.git"
+    },
     "activationEvents": [
         "onStartupFinished",
         "onLanguage:lua",
