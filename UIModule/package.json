@@ -2,6 +2,8 @@
 {
     "name": "ui-module-plugin",
     "version": "0.0.2",
+    "publisher": "juziguantou",
+    "icon": "icon.png",
     "engines": {
         "vscode": "^1.56.2"
     },
@@ -11,6 +13,9 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/juziguantou/vscodePlugin.git"
+    },
+    "scripts": {
+        "release": "standard-version"
     },
     "activationEvents": [
         "onStartupFinished",
@@ -34,7 +39,7 @@
             },
             {
                 "command": "extension.copyFile",
-                "title": "复制当前lua脚本到WinClient"
+                "title": "复制脚本到Win"
             }
         ],
         "menus": {
