@@ -1,7 +1,6 @@
-
 {
     "name": "ui-module-plugin",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "publisher": "juziguantou",
     "icon": "icon.png",
     "engines": {
@@ -82,4 +81,4 @@
             }
         ]
     }
-  }
+}
