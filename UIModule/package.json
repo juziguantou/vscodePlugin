@@ -29,6 +29,14 @@
                 "title": "创建ui和module"
             },
             {
+                "command": "create.ui",
+                "title": "创建ui"
+            },
+            {
+                "command": "create.module",
+                "title": "创建module"
+            },
+            {
                 "command": "create.click_event",
                 "title": "生成点击事件"
             },
@@ -45,7 +53,15 @@
             "explorer/context": [
                 {
                     "command": "create.ui_module",
-                    "group": "navigation"
+                    "group": "0_game_for_peace_ui_plugin"
+                },
+                {
+                    "command": "create.ui",
+                    "group": "0_game_for_peace_ui_plugin"
+                },
+                {
+                    "command": "create.module",
+                    "group": "0_game_for_peace_ui_plugin"
                 }
             ],
             "editor/context": [

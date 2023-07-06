@@ -2,111 +2,148 @@ const vscode = require('vscode')
 const fs = require("fs");
 const path = require('path');
 
-exports.activate = function(context) {
-    let disposable = vscode.commands.registerCommand('create.ui_module', async (uri) =>{
-        const fileName = await vscode.window.showInputBox({
-            prompt: '输入功能名(例如HomeBuildGroup)'
-        });
-        if (fileName) {
-            let UIName = `${fileName}UI`
-            let ModuleName = `${fileName}Module`
-            let fsPath = uri.fsPath
-            const UIFilePath = `${fsPath}\\${UIName}.lua`;
-            const ModuleFilePath = `${fsPath}\\${ModuleName}.lua`;
-            // 检查文件是否已存在
-            if (fs.existsSync(UIFilePath)) {
-                vscode.window.showErrorMessage("UI文件已存在");
-            }
-            else{
-                let UIContentText =
+function create_ui (fileName, uri){
+    let UIName = `${fileName}UI`
+    let fsPath = uri.fsPath
+    const UIFilePath = `${fsPath}\\${UIName}.lua`;
+    // 检查文件是否已存在
+    if (fs.existsSync(UIFilePath)) {
+        vscode.window.showErrorMessage("UI文件已存在");
+    }
+    else{
+        let UIContentText =
 `local ${UIName} = {}
 
 function ${UIName}:Construct()
-    self.SuperClass:Construct()
-    print_dev("${UIName}:Construct")
-    self:RegisterEvents()
-    self:InitData()
+self.SuperClass:Construct()
+print_dev("${UIName}:Construct")
+self:RegisterEvents()
+self:InitData()
 end
 
 function ${UIName}:ReceivePreDestroy()
-    self.SuperClass.ReceivePreDestroy(self)
-    print_dev("${UIName}:ReceivePreDestroy")
-    self:UnRegisterEvents()
+self.SuperClass.ReceivePreDestroy(self)
+print_dev("${UIName}:ReceivePreDestroy")
+self:UnRegisterEvents()
 end
 
 function ${UIName}:RegisterEvents()
-    print_dev("${UIName}:RegisterEvents")
+print_dev("${UIName}:RegisterEvents")
 end
 
 function ${UIName}:UnRegisterEvents()
-    print_dev("${UIName}:UnRegisterEvents")
+print_dev("${UIName}:UnRegisterEvents")
 end
 
 function ${UIName}:InitData()
-    print_dev("${UIName}:InitData")
+print_dev("${UIName}:InitData")
 end
 
 return ${UIName}`
-                fs.writeFile(UIFilePath, UIContentText, (err) => {
-                    if (err) {
-                        vscode.window.showErrorMessage('创建UI文件失败: ' + err.message);
-                    } else {
-                        vscode.window.showInformationMessage('UI文件创建成功: ' + filePath);
-                    }
-                });
+        fs.writeFile(UIFilePath, UIContentText, (err) => {
+            if (err) {
+                vscode.window.showErrorMessage('创建UI文件失败: ' + err.message);
+            } else {
+                vscode.window.showInformationMessage('UI文件创建成功: ' + filePath);
             }
-            if (fs.existsSync(ModuleFilePath)) {
-                vscode.window.showErrorMessage("Module文件已存在");
-            }
-            else{
-                let ModuleContentText =
+        });
+    }
+}
+
+function create_module (fileName, uri){
+    let ModuleName = `${fileName}Module`
+    let fsPath = uri.fsPath
+    const ModuleFilePath = `${fsPath}\\${ModuleName}.lua`;
+    if (fs.existsSync(ModuleFilePath)) {
+        vscode.window.showErrorMessage("Module文件已存在");
+    }
+    else{
+        let ModuleContentText =
 `local CommonSubModuleBase = require("client.ingame.common.common_submodule_base")
 local ${ModuleName} = CommonSubModuleBase:New()
 
-${ModuleName}.UIName = "HomePersonUI"
+${ModuleName}.UIName = "${ModuleName}UI"
 
 function ${ModuleName}:OnReceivePostLoad()
-    print_dev("${ModuleName}:OnReceivePostLoad")
+print_dev("${ModuleName}:OnReceivePostLoad")
 end
 
 function ${ModuleName}:OnReceivePreUnload()
-    print_dev("${ModuleName}:OnReceivePreUnload")
+print_dev("${ModuleName}:OnReceivePreUnload")
 end
 
 function ${ModuleName}:OnCreatedUI(UIMeta)
-    if UIMeta and UIMeta.UIName == ${ModuleName}.UIName then
-        UIMeta.UI:SetBuildingState(self.IsBuildPermissions)
-    end
+if UIMeta and UIMeta.UIName == ${ModuleName}.UIName then
+UIMeta.UI:SetState(self.UIState)
+end
 end
 
-function ${ModuleName}:ShowUI()
-    print_dev("${ModuleName}:ShowUI")
-    local MainModule = self:GetOwnerModule()
-    if MainModule then
-        MainModule:ShowUI(self.UIName)
-    end
+function ${ModuleName}:Show${ModuleName}UI()
+print_dev("${ModuleName}:ShowUI")
+local MainModule = self:GetOwnerModule()
+if MainModule then
+MainModule:ShowUI(self.UIName)
+end
 end
 
-function ${ModuleName}:HideUI()
-    print_dev("${ModuleName}:HideUI")
-    local MainModule = self:GetOwnerModule()
-    if MainModule then
-        MainModule:HideUI(self.UIName)
-    end
+function ${ModuleName}:Hide${ModuleName}UI()
+print_dev("${ModuleName}:HideUI")
+local MainModule = self:GetOwnerModule()
+if MainModule then
+MainModule:HideUI(self.UIName)
+end
 end
 
 return ${ModuleName}`
-                fs.writeFile(ModuleFilePath, ModuleContentText, (err) => {
-                    if (err) {
-                        vscode.window.showErrorMessage('创建Module文件失败: ' + err.message);
-                    } else {
-                        vscode.window.showInformationMessage('Module文件创建成功: ' + filePath);
-                    }
-                });
+        fs.writeFile(ModuleFilePath, ModuleContentText, (err) => {
+            if (err) {
+                vscode.window.showErrorMessage('创建Module文件失败: ' + err.message);
+            } else {
+                vscode.window.showInformationMessage('Module文件创建成功: ' + filePath);
             }
+        });
+    }
+}
+
+exports.activate = function(context) {
+    console.log('我被激活了!! 桀桀桀桀...')
+    let create_ui_module = vscode.commands.registerCommand('create.ui_module', async (uri) =>{
+        const fileName = await vscode.window.showInputBox({
+            prompt: '输入功能名(例如HomeBuildGroup)'
+        });
+        if (fileName && fileName != "") {
+            create_ui(fileName, uri)
+            create_module(fileName, uri)
+        }
+        else{
+            vscode.window.showErrorMessage("功能名不能为空");
         }
     });
-    context.subscriptions.push(disposable);
+    context.subscriptions.push(create_ui_module);
+    let create_ui = vscode.commands.registerCommand('create.ui', async (uri) =>{
+        const fileName = await vscode.window.showInputBox({
+            prompt: '输入功能名(例如HomeBuildGroup)'
+        });
+        if (fileName && fileName != "") {
+            create_ui(fileName, uri)
+        }
+        else{
+            vscode.window.showErrorMessage("功能名不能为空");
+        }
+    });
+    context.subscriptions.push(create_ui);
+    let create_module = vscode.commands.registerCommand('create.module', async (uri) =>{
+        const fileName = await vscode.window.showInputBox({
+            prompt: '输入功能名(例如HomeBuildGroup)'
+        });
+        if (fileName && fileName != "") {
+            create_module(fileName, uri)
+        }
+        else{
+            vscode.window.showErrorMessage("功能名不能为空");
+        }
+    });
+    context.subscriptions.push(create_module);
     let disposable2 = vscode.commands.registerCommand('create.click_event', function(){
         let editor = vscode.window.activeTextEditor; //获取活动的编辑器窗口
         //获取编辑器编辑区
