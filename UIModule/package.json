@@ -52,16 +52,19 @@
         "menus": {
             "explorer/context": [
                 {
+                    "when": "explorerResourceIsFolder",
                     "command": "create.ui_module",
-                    "group": "0_game_for_peace_ui_plugin"
+                    "group": "0_game_for_peace_ui_plugin@1"
                 },
                 {
+                    "when": "explorerResourceIsFolder",
                     "command": "create.ui",
-                    "group": "0_game_for_peace_ui_plugin"
+                    "group": "0_game_for_peace_ui_plugin@2"
                 },
                 {
+                    "when": "explorerResourceIsFolder",
                     "command": "create.module",
-                    "group": "0_game_for_peace_ui_plugin"
+                    "group": "0_game_for_peace_ui_plugin@3"
                 }
             ],
             "editor/context": [

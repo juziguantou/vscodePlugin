@@ -8,7 +8,7 @@ function create_ui (fileName, uri){
     const UIFilePath = `${fsPath}\\${UIName}.lua`;
     // 检查文件是否已存在
     if (fs.existsSync(UIFilePath)) {
-        vscode.window.showErrorMessage("UI文件已存在");
+        vscode.window.showWarningMessage("UI文件已存在");
     }
     else{
         let UIContentText =
@@ -55,7 +55,7 @@ function create_module (fileName, uri){
     let fsPath = uri.fsPath
     const ModuleFilePath = `${fsPath}\\${ModuleName}.lua`;
     if (fs.existsSync(ModuleFilePath)) {
-        vscode.window.showErrorMessage("Module文件已存在");
+        vscode.window.showWarningMessage("Module文件已存在");
     }
     else{
         let ModuleContentText =
@@ -106,44 +106,49 @@ return ${ModuleName}`
 }
 
 exports.activate = function(context) {
-    console.log('我被激活了!! 桀桀桀桀...')
-    let create_ui_module = vscode.commands.registerCommand('create.ui_module', async (uri) =>{
+    let disposable_create_ui_module = vscode.commands.registerCommand('create.ui_module', async (uri) =>{
         const fileName = await vscode.window.showInputBox({
             prompt: '输入功能名(例如HomeBuildGroup)'
         });
-        if (fileName && fileName != "") {
+        if (fileName ) {
+            if (fileName == ""){
+              	vscode.window.showErrorMessage("功能名不能为空");
+              	return
+            }
+            console.log('aaa1')
+            await create_ui(fileName, uri)
+            console.log('aaa2')
+            await create_module(fileName, uri)
+            console.log('aaa3')
+        }
+    });
+    context.subscriptions.push(disposable_create_ui_module);
+    let disposable_create_ui = vscode.commands.registerCommand('create.ui', async (uri) =>{
+        const fileName = await vscode.window.showInputBox({
+            prompt: '输入功能名(例如HomeBuildGroup)'
+        });
+        if (fileName ) {
+            if (fileName == ""){
+              	vscode.window.showErrorMessage("功能名不能为空");
+              	return
+            }
             create_ui(fileName, uri)
+        }
+    });
+    context.subscriptions.push(disposable_create_ui);
+    let disposable_create_module = vscode.commands.registerCommand('create.module', async (uri) =>{
+        const fileName = await vscode.window.showInputBox({
+            prompt: '输入功能名(例如HomeBuildGroup)'
+        });
+        if (fileName ) {
+            if (fileName == ""){
+            	vscode.window.showErrorMessage("功能名不能为空");
+              	return
+            }
             create_module(fileName, uri)
         }
-        else{
-            vscode.window.showErrorMessage("功能名不能为空");
-        }
     });
-    context.subscriptions.push(create_ui_module);
-    let create_ui = vscode.commands.registerCommand('create.ui', async (uri) =>{
-        const fileName = await vscode.window.showInputBox({
-            prompt: '输入功能名(例如HomeBuildGroup)'
-        });
-        if (fileName && fileName != "") {
-            create_ui(fileName, uri)
-        }
-        else{
-            vscode.window.showErrorMessage("功能名不能为空");
-        }
-    });
-    context.subscriptions.push(create_ui);
-    let create_module = vscode.commands.registerCommand('create.module', async (uri) =>{
-        const fileName = await vscode.window.showInputBox({
-            prompt: '输入功能名(例如HomeBuildGroup)'
-        });
-        if (fileName && fileName != "") {
-            create_module(fileName, uri)
-        }
-        else{
-            vscode.window.showErrorMessage("功能名不能为空");
-        }
-    });
-    context.subscriptions.push(create_module);
+    context.subscriptions.push(disposable_create_module);
     let disposable2 = vscode.commands.registerCommand('create.click_event', function(){
         let editor = vscode.window.activeTextEditor; //获取活动的编辑器窗口
         //获取编辑器编辑区
