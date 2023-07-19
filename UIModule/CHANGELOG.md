@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.7](https://github.com/juziguantou/vscodePlugin/compare/v0.0.6...v0.0.7) (2023-07-19)
+
+
+### Bug Fixes
+
+* 同时创建ui和module时，增加了ui引用module的代码 ([872de38](https://github.com/juziguantou/vscodePlugin/commit/872de3890c039efdde3f676786a4fe1fafcc9f5a))
+
 ### [0.0.6](https://github.com/juziguantou/vscodePlugin/compare/v0.0.5...v0.0.6) (2023-07-19)
 
 
