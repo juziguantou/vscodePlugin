@@ -15,28 +15,28 @@ function create_ui (fileName, uri){
 `local ${UIName} = {}
 
 function ${UIName}:Construct()
-self.SuperClass:Construct()
-print_dev("${UIName}:Construct")
-self:RegisterEvents()
-self:InitData()
+    self.SuperClass:Construct()
+    print_dev("${UIName}:Construct")
+    self:RegisterEvents()
+    self:InitData()
 end
 
 function ${UIName}:ReceivePreDestroy()
-self.SuperClass.ReceivePreDestroy(self)
-print_dev("${UIName}:ReceivePreDestroy")
-self:UnRegisterEvents()
+    self.SuperClass.ReceivePreDestroy(self)
+    print_dev("${UIName}:ReceivePreDestroy")
+    self:UnRegisterEvents()
 end
 
 function ${UIName}:RegisterEvents()
-print_dev("${UIName}:RegisterEvents")
+    print_dev("${UIName}:RegisterEvents")
 end
 
 function ${UIName}:UnRegisterEvents()
-print_dev("${UIName}:UnRegisterEvents")
+    print_dev("${UIName}:UnRegisterEvents")
 end
 
 function ${UIName}:InitData()
-print_dev("${UIName}:InitData")
+    print_dev("${UIName}:InitData")
 end
 
 return ${UIName}`
@@ -62,36 +62,36 @@ function create_module (fileName, uri){
 `local CommonSubModuleBase = require("client.ingame.common.common_submodule_base")
 local ${ModuleName} = CommonSubModuleBase:New()
 
-${ModuleName}.UIName = "${ModuleName}UI"
+${ModuleName}.${fileName}UIName = "${fileName}UI"
 
 function ${ModuleName}:OnReceivePostLoad()
-print_dev("${ModuleName}:OnReceivePostLoad")
+    print_dev("${ModuleName}:OnReceivePostLoad")
 end
 
 function ${ModuleName}:OnReceivePreUnload()
-print_dev("${ModuleName}:OnReceivePreUnload")
+    print_dev("${ModuleName}:OnReceivePreUnload")
 end
 
 function ${ModuleName}:OnCreatedUI(UIMeta)
-if UIMeta and UIMeta.UIName == ${ModuleName}.UIName then
-UIMeta.UI:SetState(self.UIState)
-end
+    if UIMeta and UIMeta.UIName == self.${fileName}UIName then
+        UIMeta.UI:SetState(self.UIState)
+    end
 end
 
 function ${ModuleName}:Show${ModuleName}UI()
-print_dev("${ModuleName}:ShowUI")
-local MainModule = self:GetOwnerModule()
-if MainModule then
-MainModule:ShowUI(self.UIName)
-end
+    print_dev("${ModuleName}:ShowUI")
+    local MainModule = self:GetOwnerModule()
+    if MainModule then
+        MainModule:ShowUI(self.${fileName}UIName)
+    end
 end
 
 function ${ModuleName}:Hide${ModuleName}UI()
-print_dev("${ModuleName}:HideUI")
-local MainModule = self:GetOwnerModule()
-if MainModule then
-MainModule:HideUI(self.UIName)
-end
+    print_dev("${ModuleName}:HideUI")
+    local MainModule = self:GetOwnerModule()
+    if MainModule then
+        MainModule:HideUI(self.${fileName}UIName)
+    end
 end
 
 return ${ModuleName}`
