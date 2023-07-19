@@ -2,10 +2,26 @@ const vscode = require('vscode')
 const fs = require("fs");
 const path = require('path');
 
-function create_ui (fileName, uri){
+function create_ui (fileName, uri, isCreateModuleDir){
     let UIName = `${fileName}UI`
     let fsPath = uri.fsPath
     const UIFilePath = `${fsPath}\\${UIName}.lua`;
+    let ModuleDir = ''
+    let ModuleName = ''
+    if (isCreateModuleDir){
+        ModuleName = `${fileName}Module`
+        let LuaIdx = fsPath.indexOf("Lua")
+        if (LuaIdx == -1){
+            LuaIdx = fsPath.indexOf("lua")
+            if (LuaIdx == -1){
+                vscode.window.showErrorMessage('找不到lua目录');
+                return
+            }
+        }
+        let luaLaterStr = fsPath.substr(LuaIdx + 4); //从lua目录后面到最后的目录字符串
+        luaLaterStr = luaLaterStr.replace(/\\/g, ".")//替换\为.
+        ModuleDir = `${luaLaterStr}.${ModuleName}`;
+    }
     // 检查文件是否已存在
     if (fs.existsSync(UIFilePath)) {
         vscode.window.showWarningMessage("UI文件已存在");
@@ -13,6 +29,7 @@ function create_ui (fileName, uri){
     else{
         let UIContentText =
 `local ${UIName} = {}
+local ${ModuleName} = require("${ModuleDir}")
 
 function ${UIName}:Construct()
     self.SuperClass:Construct()
@@ -115,11 +132,8 @@ exports.activate = function(context) {
               	vscode.window.showErrorMessage("功能名不能为空");
               	return
             }
-            console.log('aaa1')
-            await create_ui(fileName, uri)
-            console.log('aaa2')
+            await create_ui(fileName, uri, true)
             await create_module(fileName, uri)
-            console.log('aaa3')
         }
     });
     context.subscriptions.push(disposable_create_ui_module);
