@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.6](https://github.com/juziguantou/vscodePlugin/compare/v0.0.5...v0.0.6) (2023-07-19)
+
+
+### Bug Fixes
+
+* 修复了创建文件没有缩进的问题 ([20454ee](https://github.com/juziguantou/vscodePlugin/commit/20454eeebcb89c8354bc7e3a064d13d8a911877b))
+
 ### [0.0.5](https://github.com/juziguantou/vscodePlugin/compare/v0.0.4...v0.0.5) (2023-07-06)
 
 
