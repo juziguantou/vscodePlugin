@@ -135,7 +135,7 @@
                 },
                 "winPathSettings.pathString": {
                     "type": "string",
-                    "default": "",
+                    "default": "D:\\WinClient",
                     "description": "WinClient目录绝对路径"
                 }
             }

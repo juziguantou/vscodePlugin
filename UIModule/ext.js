@@ -28,9 +28,10 @@ function create_ui (fileName, uri, isCreateModuleDir){
     }
     else{
         let UIContentText =
-`local ${UIName} = {}
+`
 ${ModuleNameLine}
 local CommonIngameUI = require("client.ingame.common.common_ingame_ui")
+local ${UIName} = CommonIngameUI:New()
 
 function ${UIName}:Construct()
     self.SuperClass:Construct()
