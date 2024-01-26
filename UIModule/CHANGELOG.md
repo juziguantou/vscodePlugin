@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.9](https://github.com/juziguantou/vscodePlugin/compare/v0.0.8...v0.0.9) (2024-01-26)
+
+
+### Bug Fixes
+
+* 修改了ui的生成不规范问题 ([6c61cca](https://github.com/juziguantou/vscodePlugin/commit/6c61ccab4a74e3735553fe649b9de5c63b80c727))
+
 ### [0.0.8](https://github.com/juziguantou/vscodePlugin/compare/v0.0.7...v0.0.8) (2024-01-26)
 
 * 新增了删除脚本选项，适配了新版ui逻辑
