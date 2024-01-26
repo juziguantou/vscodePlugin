@@ -47,6 +47,14 @@
             {
                 "command": "extension.copyFile",
                 "title": "复制脚本到Win"
+            },
+            {
+                "command": "extension.deleteFile",
+                "title": "删除Win当前脚本"
+            },
+            {
+                "command": "extension.deleteAllFile",
+                "title": "删除Win脚本文件夹"
             }
         ],
         "menus": {
@@ -82,6 +90,16 @@
                     "when": "editorFocus",
                     "command": "extension.copyFile",
                     "group": "0_game_for_peace_ui_plugin"
+                },
+                {
+                    "when": "editorFocus",
+                    "command": "extension.deleteFile",
+                    "group": "0_game_for_peace_ui_plugin"
+                },
+                {
+                    "when": "editorFocus",
+                    "command": "extension.deleteAllFile",
+                    "group": "0_game_for_peace_ui_plugin"
                 }
             ]
         },
@@ -97,7 +115,30 @@
             {
                 "command": "extension.copyFile",
                 "key": "alt+z"
+            },
+            {
+                "command": "extension.deleteFile",
+                "key": "alt+d"
+            },
+            {
+                "command": "extension.deleteAllFile",
+                "key": "ctrl+alt+d"
             }
-        ]
+        ],
+        "configuration": {
+            "title": "ui-module配置",
+            "properties": {
+                "winPathSettings.enableFeature": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "启用win脚本自定义路径"
+                },
+                "winPathSettings.pathString": {
+                    "type": "string",
+                    "default": "",
+                    "description": "WinClient目录绝对路径"
+                }
+            }
+        }
     }
 }

@@ -25,4 +25,4 @@
 ## 版本历史
 
 ---
-[查看版本历史](./CHANGELOG.md)
+[查看版本历史](./UIModule/CHANGELOG.md)
