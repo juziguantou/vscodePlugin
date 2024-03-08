@@ -86,16 +86,16 @@ function ${ModuleName}:OnReceivePreUnload()
     print_dev("${ModuleName}:OnReceivePreUnload")
 end
 
-function ${ModuleName}:Show${ModuleName}UI()
-    print_dev("${ModuleName}:Show${ModuleName}UI")
+function ${ModuleName}:Show${fileName}UI()
+    print_dev("${ModuleName}:Show${fileName}UI")
     local MainModule = self:GetOwnerModule()
     if MainModule then
         MainModule:ShowUI(self.${fileName}UIName)
     end
 end
 
-function ${ModuleName}:Hide${ModuleName}UI()
-    print_dev("${ModuleName}:Hide${ModuleName}UI")
+function ${ModuleName}:Hide${fileName}UI()
+    print_dev("${ModuleName}:Hide${fileName}UI")
     local MainModule = self:GetOwnerModule()
     if MainModule then
         MainModule:HideUI(self.${fileName}UIName)
@@ -198,11 +198,11 @@ exports.activate = function(context) {
             //let lineText = line.text.replace(/[\s\t]/g, "");
             if (i == endline){
                 lastLineCharCnt = linelength
-                RegisterStr = RegisterStr + BeginText + "self:ClickButtonWidget(\"" + Text + '\", self.' + OnClickedFuntionText + ')'
+                RegisterStr = RegisterStr + BeginText + "self:ClickButtonWidget(self." + Text + ', self.' + OnClickedFuntionText + ')'
                 FuntionStr = FuntionStr + 'function ' + UINameText + ':' + OnClickedFuntionText + '()\n    print_dev("' + UINameText + ':' + OnClickedFuntionText + '")\nend\n\n'
             }
             else{
-                RegisterStr = RegisterStr + BeginText + "self:ClickButtonWidget(\"" + Text + '\", self.' + OnClickedFuntionText + ')' + "\n"
+                RegisterStr = RegisterStr + BeginText + "self:ClickButtonWidget(self." + Text + ', self.' + OnClickedFuntionText + ')' + "\n"
                 FuntionStr = FuntionStr + 'function ' + UINameText + ':' + OnClickedFuntionText + '()\n    print_dev("' + UINameText + ':' + OnClickedFuntionText + '")\nend\n\n'
             }
         }
