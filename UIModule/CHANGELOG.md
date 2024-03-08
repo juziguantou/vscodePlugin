@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.10](https://github.com/juziguantou/vscodePlugin/compare/v0.0.9...v0.0.10) (2024-03-08)
+
+
+### Bug Fixes
+
+* 修改了点击事件生成错误的问题 ([f0b2ac8](https://github.com/juziguantou/vscodePlugin/commit/f0b2ac8345525770c7fd5b2e64c8e9df0e6a0141))
+
 ### [0.0.9](https://github.com/juziguantou/vscodePlugin/compare/v0.0.8...v0.0.9) (2024-01-26)
 
 
