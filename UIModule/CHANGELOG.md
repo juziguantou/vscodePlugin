@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.11](https://github.com/juziguantou/vscodePlugin/compare/v0.0.10...v0.0.11) (2024-04-07)
+
+
+### Performance Improvements
+
+* 适配了新的流程 ([a18f021](https://github.com/juziguantou/vscodePlugin/commit/a18f0212cc752ff49cfe0ec5e8d44ebd0e8fd988))
+
 ### [0.0.10](https://github.com/juziguantou/vscodePlugin/compare/v0.0.9...v0.0.10) (2024-03-08)
 
 
