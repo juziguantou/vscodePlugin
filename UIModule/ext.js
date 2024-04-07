@@ -30,8 +30,8 @@ function create_ui (fileName, uri, isCreateModuleDir){
         let UIContentText =
 `
 ${ModuleNameLine}
-local CommonIngameUI = require("client.ingame.common.common_ingame_ui")
-local ${UIName} = CommonIngameUI:New()
+local CommonIngameWidgetBase = require("client.ingame.common.common_ingame_widget_base")
+local ${UIName} = CommonIngameWidgetBase:New()
 
 function ${UIName}:Construct()
     self.SuperClass:Construct()
@@ -40,9 +40,8 @@ function ${UIName}:Construct()
     self:InitData()
 end
 
-function ${UIName}:ReceivePreDestroy()
-    self.SuperClass.ReceivePreDestroy(self)
-    print_dev("${UIName}:ReceivePreDestroy")
+function ${UIName}:OnDestroy()
+    print_dev("${UIName}:OnDestroy")
 end
 
 function ${UIName}:RegisterEvents()
