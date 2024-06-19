@@ -137,6 +137,11 @@
                     "type": "string",
                     "default": "D:\\WinClient",
                     "description": "WinClient目录绝对路径"
+                },
+                "winPathSettings.enableCopyOnSave": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "启用win脚本保存时自动复制"
                 }
             }
         }

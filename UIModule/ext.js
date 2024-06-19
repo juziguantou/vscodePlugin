@@ -112,6 +112,49 @@ return ${ModuleName}`
     }
 }
 
+async function copy_file (sourcePath){
+    
+    console.log("copy_file");
+    console.log(sourcePath);
+    const directory = sourcePath.substring(0, sourcePath.lastIndexOf("\\"))
+    let LuaIdx = directory.indexOf("Lua")
+    if (LuaIdx == -1){
+        LuaIdx = directory.indexOf("lua")
+        if (LuaIdx == -1){
+            vscode.window.showErrorMessage('找不到lua目录');
+            return
+        }
+    }
+    let luaLaterStr = directory.substring(LuaIdx); //从lua开始到最后的目录字符串
+    const SurviveIdx = directory.indexOf("Survive")
+    if (SurviveIdx == -1){
+        vscode.window.showErrorMessage('找不到Survive目录');
+        return
+    }
+
+    let targetDirectory = ""// 替换的目标目录
+    const config = vscode.workspace.getConfiguration('winPathSettings');
+    const enableFeature = config.get('enableFeature');
+    if (enableFeature){
+        let pathString = config.get('pathString');
+        targetDirectory = pathString + "\\WindowsNoEditor\\ShadowTrackerExtra\\Content\\" + luaLaterStr
+        console.log(targetDirectory)
+    }
+    else{
+        targetDirectory = directory.replace("Survive\\Source\\" + luaLaterStr, "Survive_Pak\\WinClient\\WindowsNoEditor\\ShadowTrackerExtra\\Content\\" + luaLaterStr)
+    }
+    
+    try {
+        if (!fs.existsSync(targetDirectory)) {//如果目录不存在，则创建目录
+            fs.mkdirSync(targetDirectory, { recursive: true });
+        }
+        await fs.promises.copyFile(sourcePath, path.join(targetDirectory, path.basename(sourcePath)));
+        vscode.window.showInformationMessage('File copied successfully.');
+    } catch (error) {
+        vscode.window.showErrorMessage(`Error copying file: ${error.message}`);
+    }
+}
+
 exports.activate = function(context) {
     let disposable_create_ui_module = vscode.commands.registerCommand('create.ui_module', async (uri) =>{
         const fileName = await vscode.window.showInputBox({
@@ -127,6 +170,7 @@ exports.activate = function(context) {
         }
     });
     context.subscriptions.push(disposable_create_ui_module);
+
     let disposable_create_ui = vscode.commands.registerCommand('create.ui', async (uri) =>{
         const fileName = await vscode.window.showInputBox({
             prompt: '输入功能名(例如HomeBuildGroup)'
@@ -140,6 +184,7 @@ exports.activate = function(context) {
         }
     });
     context.subscriptions.push(disposable_create_ui);
+
     let disposable_create_module = vscode.commands.registerCommand('create.module', async (uri) =>{
         const fileName = await vscode.window.showInputBox({
             prompt: '输入功能名(例如HomeBuildGroup)'
@@ -153,6 +198,7 @@ exports.activate = function(context) {
         }
     });
     context.subscriptions.push(disposable_create_module);
+
     let disposable2 = vscode.commands.registerCommand('create.click_event', function(){
         let editor = vscode.window.activeTextEditor; //获取活动的编辑器窗口
         //获取编辑器编辑区
@@ -225,6 +271,7 @@ exports.activate = function(context) {
 		});
     });
     context.subscriptions.push(disposable2);
+
     let disposable3 = vscode.commands.registerCommand('create.event', function(){
         let editor = vscode.window.activeTextEditor; //获取活动的编辑器窗口
         if (!editor) { return; }
@@ -302,55 +349,31 @@ exports.activate = function(context) {
     });
     context.subscriptions.push(disposable3);
 
-    const copyFile = vscode.commands.registerCommand('extension.copyFile', async () => {
+    //复制文件
+    const copyFile = vscode.commands.registerCommand('extension.copyFile', async () =>{
         const activeEditor = vscode.window.activeTextEditor;
         if (!activeEditor) {
             vscode.window.showErrorMessage('当前没有活动窗口');
             return;
         }
-        
         const sourcePath = activeEditor.document.uri.fsPath;
-        const directory = sourcePath.substring(0, sourcePath.lastIndexOf("\\"))
-        let LuaIdx = directory.indexOf("Lua")
-        if (LuaIdx == -1){
-            LuaIdx = directory.indexOf("lua")
-            if (LuaIdx == -1){
-                vscode.window.showErrorMessage('找不到lua目录');
-                return
-            }
-        }
-        let luaLaterStr = directory.substring(LuaIdx); //从lua开始到最后的目录字符串
-        const SurviveIdx = directory.indexOf("Survive")
-        if (SurviveIdx == -1){
-            vscode.window.showErrorMessage('找不到Survive目录');
-            return
-        }
-
-        let targetDirectory = ""// 替换的目标目录
-        const config = vscode.workspace.getConfiguration('winPathSettings');
-        const enableFeature = config.get('enableFeature');
-        if (enableFeature){
-            let pathString = config.get('pathString');
-            targetDirectory = pathString + "\\WindowsNoEditor\\ShadowTrackerExtra\\Content\\" + luaLaterStr
-            console.log(targetDirectory)
-        }
-        else{
-            targetDirectory = directory.replace("Survive\\Source\\" + luaLaterStr, "Survive_Pak\\WinClient\\WindowsNoEditor\\ShadowTrackerExtra\\Content\\" + luaLaterStr)
-        }
-        
-        try {
-            if (!fs.existsSync(targetDirectory)) {//如果目录不存在，则创建目录
-                fs.mkdirSync(targetDirectory, { recursive: true });
-            }
-            await fs.promises.copyFile(sourcePath, path.join(targetDirectory, path.basename(sourcePath)));
-            vscode.window.showInformationMessage('File copied successfully.');
-        } catch (error) {
-            vscode.window.showErrorMessage(`Error copying file: ${error.message}`);
-        }
+        console.log("extension.copyFile");
+        copy_file(sourcePath);
     });
-    
     context.subscriptions.push(copyFile);
 
+    let copyOnSave = vscode.workspace.onDidSaveTextDocument(document => {
+        const config = vscode.workspace.getConfiguration('winPathSettings');
+        const enableCopyOnSave = config.get('enableCopyOnSave');
+        if (enableCopyOnSave){
+            // 获取源文件的路径
+            let sourcePath = document.uri.fsPath;
+            console.log("onDidSave");
+            copy_file(sourcePath);
+        }
+    });
+    context.subscriptions.push(copyOnSave);
+    
     const deleteFile = vscode.commands.registerCommand('extension.deleteFile', async () => {
         const activeEditor = vscode.window.activeTextEditor;
         if (!activeEditor) {
@@ -397,7 +420,6 @@ exports.activate = function(context) {
             vscode.window.showErrorMessage(`Error delete file: ${error.message}`);
         }
     });
-    
     context.subscriptions.push(deleteFile);
 
     const deleteAllFile = vscode.commands.registerCommand('extension.deleteAllFile', async () => {
@@ -431,6 +453,5 @@ exports.activate = function(context) {
             vscode.window.showErrorMessage(`Error DeleteAll file: ${error.message}`);
         }
     });
-    
     context.subscriptions.push(deleteAllFile);
 }
